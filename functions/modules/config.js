@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Unified config file.
  * Includes constants, KV keys, and default settings for the worker.
  */
@@ -22,10 +22,12 @@ export const DEFAULT_SETTINGS = {
     subConfig: 'https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_Full.ini',
     subConverterScv: false,
     subConverterUdp: false,
+    builtinLoonSkipCertVerify: false,
     enableAccessLog: false,
     NotifyThresholdDays: 3,
     NotifyThresholdPercent: 90,
     enableTrafficNode: false,
+    enablePublicPage: true,
     storageType: 'kv',
     defaultPrefixSettings: {
         enableManualNodes: true,

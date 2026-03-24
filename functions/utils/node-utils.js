@@ -9,7 +9,7 @@ import { extractNodeRegion, getRegionEmoji } from '../modules/utils/geo-utils.js
 /**
  * 节点协议正则表达式
  */
-export const NODE_PROTOCOL_REGEX = /^(ss|ssr|vmess|vless|trojan|hysteria2?|hy|hy2|tuic|anytls|socks5|socks|wireguard):\/\//g;
+export const NODE_PROTOCOL_REGEX = /^(ss|ssr|vmess|vless|trojan|hysteria2?|hy|hy2|tuic|snell|anytls|socks5|socks|wireguard):\/\//g;
 
 /**
  * 为节点名称添加前缀
@@ -185,10 +185,29 @@ export function removeFlagEmoji(link) {
 /**
  * [核心修复] 修复节点URL中的编码问题（包含 Hysteria2 密码解码）
  */
-export function fixNodeUrlEncoding(nodeUrl) {
+export function fixNodeUrlEncoding(nodeUrl, options = {}) {
     if (typeof nodeUrl !== 'string' || nodeUrl.length === 0) {
         return nodeUrl;
     }
+
+    const { plusAsSpace = false } = options;
+
+    const normalizeFragment = (url) => {
+        const hashIndex = url.lastIndexOf('#');
+        if (hashIndex === -1) return url;
+
+        const base = url.substring(0, hashIndex + 1);
+        const rawFragment = url.substring(hashIndex + 1);
+        if (!rawFragment) return url;
+
+        const fragmentToDecode = plusAsSpace ? rawFragment.replace(/\+/g, ' ') : rawFragment;
+        try {
+            const decoded = decodeURIComponent(fragmentToDecode);
+            return base + encodeURIComponent(decoded);
+        } catch (e) {
+            return url;
+        }
+    };
 
     // 1. 针对 Hysteria2/Hy2 的用户名与参数进行解码
     if (nodeUrl.startsWith('hysteria2://') || nodeUrl.startsWith('hy2://')) {
@@ -216,7 +235,7 @@ export function fixNodeUrlEncoding(nodeUrl) {
             return shouldKeepRaw(decoded) ? match : `${prefix}${decoded}`;
         });
 
-        return nodeUrl;
+        return normalizeFragment(nodeUrl);
     }
 
     // 2. 其他协议的 Base64 修复逻辑
@@ -240,9 +259,9 @@ export function fixNodeUrlEncoding(nodeUrl) {
             }
         }
 
-        return baseLink + fragment;
+        return normalizeFragment(baseLink + fragment);
     } catch (e) {
-        return nodeUrl;
+        return normalizeFragment(nodeUrl);
     }
 }
 

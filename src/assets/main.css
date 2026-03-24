@@ -280,7 +280,7 @@ animation: wave 1.2s ease-in-out infinite;
 }
 
 .nav-brand-badge {
-  @apply rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30;
+  @apply flex items-center justify-center;
 }
 
 .nav-brand-badge-sm {
@@ -292,7 +292,7 @@ animation: wave 1.2s ease-in-out infinite;
 }
 
 .nav-action-btn {
-  @apply p-2 rounded-lg transition-all duration-200 hover:scale-110 focus:outline-none;
+  @apply p-2 rounded-lg transition-all duration-200 hover:scale-105 focus:outline-none;
 }
 
 .nav-action-btn-neutral {
