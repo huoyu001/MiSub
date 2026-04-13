@@ -18,26 +18,47 @@ export const DEFAULT_SETTINGS = {
     FileName: 'MiSub',
     mytoken: 'auto',
     profileToken: 'profiles',
-    subConverter: 'url.v1.mk',
-    subConfig: 'https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_Full.ini',
-    subConverterScv: false,
-    subConverterUdp: false,
+    transformConfigMode: 'builtin',
+    transformConfig: '',
+    ruleLevel: 'std',
+    builtinSkipCertVerify: false,
+    builtinEnableUdp: false,
     builtinLoonSkipCertVerify: false,
     enableAccessLog: false,
+    accessLogPersistenceMode: 'light',
     NotifyThresholdDays: 3,
     NotifyThresholdPercent: 90,
     enableTrafficNode: false,
     enablePublicPage: true,
     storageType: 'kv',
+    // 新增：借鉴Sub-Store和miaomiaowu的功能
+    enableSubscriptionSync: true,      // 启用订阅同步
+    subscriptionCacheExpireMinutes: 60, // 订阅缓存过期时间（分钟）
+    enableTrafficMonitor: true,        // 启用流量监控
+    enableTemplateEngine: true,        // 启用模板引擎
+    enableEnhancedLogging: true,       // 启用增强日志
+    maxSubscriptionConcurrency: 3,     // 最大订阅并发数
+    defaultUserAgent: 'clash-meta/2.5.0', // 默认User-Agent
     defaultPrefixSettings: {
         enableManualNodes: true,
         enableSubscriptions: true,
         manualNodePrefix: '手动节点'
     },
+    defaultOperators: [], // 新版操作符链式处理 (New Unified Pipeline)
+    // @deprecated 使用 defaultOperators 代替
     defaultNodeTransform: {
         enabled: false,
+        filter: {
+            include: { enabled: false, rules: [] },
+            exclude: { enabled: false, rules: [] },
+            protocols: { enabled: false, values: [] },
+            regions: { enabled: false, values: [] },
+            script: { enabled: false, expression: '' },
+            useless: { enabled: false }
+        },
         rename: {
             regex: { enabled: false, rules: [] },
+            script: { enabled: false, expression: '' },
             template: {
                 enabled: false,
                 template: '{emoji}{region}-{protocol}-{index}',
@@ -64,6 +85,7 @@ export const DEFAULT_SETTINGS = {
             ]
         }
     },
+    nodeTransformPresets: [],
     // 公告设置
     announcement: {
         enabled: false,
@@ -82,7 +104,7 @@ export const DEFAULT_SETTINGS = {
 
 // System constants
 export const SYSTEM_CONSTANTS = {
-    VERSION: '2.0.0-modular-v2',
+    VERSION: '2.5.0',
     // Use v2rayN UA to fetch subscriptions reliably.
     FETCHER_USER_AGENT: 'v2rayN/7.23'
 };
